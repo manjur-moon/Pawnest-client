@@ -1,0 +1,25 @@
+"use client";
+
+import ConfirmModal from "@/components/shared/ConfirmModal";
+import EmptyState from "@/components/shared/EmptyState";
+import ErrorState from "@/components/shared/ErrorState";
+import LoadingSpinner from "@/components/shared/LoadingSpinner";
+import { deletePetApi, getMyListingsApi } from "@/lib/petsApi";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Eye, FilePenLine, Inbox, Trash2 } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import RequestsModal from "./RequestsModal";
+
+export default function MyListingsClient() {
+  const [deleteTarget, setDeleteTarget] = useState(null);
+  const [requestTarget, setRequestTarget] = useState(null);
+  const queryClient = useQueryClient();
+  const { data, isLoading, isError } = useQuery({ queryKey: ["my-listings"], queryFn: getMyListingsApi });
+  const deleteMutation = useMutation({ mutationFn: deletePetApi, onSuccess: (response) => { toast.success(response.message || "Pet deleted successfully"); queryClient.invalidateQueries({ queryKey: ["my-listings"] }); queryClient.invalidateQueries({ queryKey: ["pets"] }); queryClient.invalidateQueries({ queryKey: ["featured-pets"] }); setDeleteTarget(null); }, onError: (error) => toast.error(error?.response?.data?.message || "Failed to delete pet") });
+  const pets = data?.pets || [];
+  const stats = data?.stats || { totalListings: 0, available: 0, adopted: 0 };
+  return <div><div className="mb-8"><p className="mb-3 inline-block rounded-full bg-orange-100 px-5 py-2 text-sm font-bold text-orange-700">Owner Dashboard</p><h1 className="text-3xl font-black text-slate-950">My Listings</h1><p className="mt-3 max-w-2xl text-slate-600">Manage pets you have listed for adoption. You can view, update, remove, and review adoption requests.</p></div><div className="mb-8 grid gap-5 md:grid-cols-3"><Stat title="Total Listings" value={stats.totalListings} className="bg-orange-50" /><Stat title="Available" value={stats.available} className="bg-green-50" /><Stat title="Adopted" value={stats.adopted} className="bg-slate-100" /></div>{isLoading && <LoadingSpinner message="Loading your listings..." />}{isError && <ErrorState title="Failed to load listings" message="Please check your server connection and login session." />}{!isLoading && !isError && pets.length === 0 && <EmptyState title="No listings yet" message="Add your first pet listing from the Add Pet page." />}{!isLoading && !isError && pets.length > 0 && <div className="space-y-4">{pets.map((pet) => <div key={pet._id} className="grid gap-4 rounded-3xl border border-orange-100 p-4 md:grid-cols-[120px_1fr_auto]"><img src={pet.image} alt={pet.petName} className="h-28 w-full rounded-2xl object-cover md:w-28" /><div><div className="flex flex-wrap items-center gap-3"><h3 className="text-xl font-black text-slate-950">{pet.petName}</h3><span className={`rounded-full px-3 py-1 text-xs font-bold ${pet.status === "adopted" ? "bg-slate-900 text-white" : "bg-green-100 text-green-700"}`}>{pet.status}</span></div><p className="mt-2 text-sm font-semibold text-slate-500">{pet.species} • {pet.breed} • {pet.location}</p><p className="mt-2 font-bold text-orange-700">Adoption Fee: ${pet.adoptionFee}</p><p className="mt-2 line-clamp-2 text-sm leading-6 text-slate-600">{pet.description}</p></div><div className="flex flex-wrap items-center gap-2 md:flex-col md:items-stretch"><button type="button" onClick={() => setRequestTarget(pet)} className="flex items-center justify-center gap-2 rounded-2xl bg-slate-950 px-4 py-2 text-sm font-bold text-white transition hover:bg-orange-600"><Inbox size={16} />Requests</button><Link href={`/dashboard/update-pet/${pet._id}`} className="flex items-center justify-center gap-2 rounded-2xl bg-orange-100 px-4 py-2 text-sm font-bold text-orange-700 transition hover:bg-orange-200"><FilePenLine size={16} />Edit</Link><Link href={`/pets/${pet._id}`} className="flex items-center justify-center gap-2 rounded-2xl bg-green-100 px-4 py-2 text-sm font-bold text-green-700 transition hover:bg-green-200"><Eye size={16} />View</Link><button type="button" onClick={() => setDeleteTarget(pet)} className="flex items-center justify-center gap-2 rounded-2xl bg-red-100 px-4 py-2 text-sm font-bold text-red-700 transition hover:bg-red-200"><Trash2 size={16} />Delete</button></div></div>)}</div>}<RequestsModal open={Boolean(requestTarget)} pet={requestTarget} onClose={() => setRequestTarget(null)} /><ConfirmModal open={Boolean(deleteTarget)} title="Delete pet listing?" message={`Are you sure you want to delete ${deleteTarget?.petName || "this pet"}? This action cannot be undone.`} confirmText="Delete" loading={deleteMutation.isPending} onClose={() => setDeleteTarget(null)} onConfirm={() => deleteMutation.mutate(deleteTarget._id)} /></div>;
+}
+function Stat({ title, value, className }) { return <div className={`rounded-3xl p-6 ${className}`}><p className="text-sm font-bold text-orange-700">{title}</p><h3 className="mt-2 text-4xl font-black text-slate-950">{value}</h3></div>; }
