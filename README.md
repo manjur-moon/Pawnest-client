@@ -1,91 +1,196 @@
-# PawsNest Client
+# PawsNest – Pet Adoption Platform
 
-## Project Name
-PawsNest – Pet Adoption Platform
+## Project Description
 
-## Purpose
-PawsNest is a full-stack pet adoption platform where users can browse pets, view pet details, submit adoption requests, manage their own requests, and allow pet owners to manage pet listings and adoption approvals.
+PawsNest is a full-stack pet adoption platform where users can browse available pets, view pet details, submit adoption requests, and manage their own adoption activities. Pet owners can add, update, and delete pet listings, as well as approve or reject adoption requests.
 
-## Live Website
-Client Live URL: `https://your-client-vercel-url.vercel.app`
+The platform includes secure authentication, Google login, protected dashboard routes, search, filtering, sorting, and a responsive modern user interface.
 
-## Server API
-Server Live URL: `https://your-server-render-url.onrender.com`
+---
 
-## Key Features
-- Browse all available pets with search, species filter, and sorting.
-- View full pet details with adoption request form.
-- Custom JWT authentication with HTTPOnly cookie.
-- Email/password registration and login.
-- Google login integration.
-- Add, update, and delete pet listings.
-- Owner-only dashboard for managing listings.
-- Adoption request approval/rejection system.
-- My Requests page for tracking submitted adoption requests.
-- Dark/light theme toggle.
-- Framer Motion animations.
-- Fully responsive design for mobile, tablet, and desktop.
+## Live Project Link
 
-## Main Routes
-- `/` – Home page
-- `/all-pets` – Browse all pets
-- `/login` – User login
-- `/register` – User registration
-- `/pets/[id]` – Private pet details and adoption form
-- `/dashboard` – Private dashboard
-- `/dashboard/add-pet` – Add new pet
-- `/dashboard/my-listings` – Owner listings
-- `/dashboard/my-requests` – User adoption requests
-- `/dashboard/update-pet/[id]` – Update pet listing
+- **Live Website: https://pawnest-client.vercel.app/
+- **Live Server/API: https://pawnest-server.onrender.com
 
-## NPM Packages Used
-- next
-- react
-- react-dom
-- axios
-- react-hot-toast
-- react-hook-form
-- @tanstack/react-query
-- @react-oauth/google
-- framer-motion
-- lucide-react
-- tailwindcss
+---
 
-## Environment Variables
 
-Create `.env.local` file:
+
+## Technologies Used
+
+### Frontend
+
+- Next.js
+- React.js
+- Tailwind CSS
+- Axios
+- TanStack Query
+- React Hook Form
+- React Hot Toast
+- Framer Motion
+- Lucide React
+- Google OAuth
+
+### Backend
+
+- Node.js
+- Express.js
+- MongoDB
+- JWT Authentication
+- HTTPOnly Cookie
+- bcryptjs
+- CORS
+- dotenv
+- Google Auth Library
+
+---
+
+## Core Features
+
+- Users can browse all available pets.
+- Users can search pets by name.
+- Users can filter pets by species.
+- Users can sort pets by newest or adoption fee.
+- Users can view detailed information about each pet.
+- Users can register and login using email and password.
+- Users can login with Google.
+- JWT authentication is stored securely in HTTPOnly cookies.
+- Protected dashboard for authenticated users.
+- Users can add new pet adoption listings.
+- Pet owners can update or delete their own pet listings.
+- Users can submit adoption requests.
+- Users can track and cancel their own adoption requests.
+- Pet owners can view adoption requests for their listed pets.
+- Pet owners can approve or reject adoption requests.
+- When a request is approved, the pet status changes to adopted.
+- Other pending requests for the same pet are automatically rejected.
+- Dark and light theme toggle.
+- Responsive design for mobile, tablet, and desktop.
+
+---
+
+## Dependencies Used
+
+### Client Dependencies
+
+```json
+{
+  "@react-oauth/google": "latest",
+  "@tanstack/react-query": "latest",
+  "axios": "latest",
+  "framer-motion": "latest",
+  "lucide-react": "latest",
+  "next": "latest",
+  "react": "latest",
+  "react-dom": "latest",
+  "react-hook-form": "latest",
+  "react-hot-toast": "latest"
+}
+```
+
+### Server Dependencies
+
+```json
+{
+  "bcryptjs": "latest",
+  "cookie-parser": "latest",
+  "cors": "latest",
+  "dotenv": "latest",
+  "express": "latest",
+  "google-auth-library": "latest",
+  "jsonwebtoken": "latest",
+  "mongodb": "latest"
+}
+```
+
+---
+
+## How to Run the Project Locally
+
+### 1. Clone the Project
+
+```bash
+git clone your-repository-link
+cd pawsnest-pet-adoption-next-full
+```
+
+---
+
+### 2. Setup the Server
+
+Go to the server folder:
+
+```bash
+cd server
+npm install
+```
+
+Create a `.env` file inside the `server` folder and add the following environment variables:
+
+```env
+PORT=5000
+MONGODB_URI=mongodb+srv://new_user_09:2buSG4CKOfLf2BAx@cluster0.sqawyxx.mongodb.net/?appName=Cluster0
+JWT_SECRET=1bfd210dfd9153deb9b11906eff3d76ff2a2420749b6b0404a42f4d26b904c97
+CLIENT_URL=http://localhost:3000
+GOOGLE_CLIENT_ID=632523746196-ne5jk2n63daisod217nc4etqblidkr5r.apps.googleusercontent.com
+NODE_ENV=development
+```
+
+Run the server:
+
+```bash
+npm run dev
+```
+
+The server will run at:
+
+```bash
+http://localhost:5000
+```
+
+---
+
+### 3. Setup the Client
+
+Open another terminal and go to the client folder:
+
+```bash
+cd client
+npm install
+```
+
+Create a `.env.local` file inside the `client` folder and add the following environment variables:
 
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:5000
 NEXT_PUBLIC_GOOGLE_CLIENT_ID=your-google-client-id
 ```
 
-For production:
-
-```env
-NEXT_PUBLIC_API_URL=https://your-server-render-url.onrender.com
-NEXT_PUBLIC_GOOGLE_CLIENT_ID=your-google-client-id
-```
-
-## Local Run Instructions
+Run the client:
 
 ```bash
-npm install
 npm run dev
 ```
 
-The client will run at `http://localhost:3000`.
-
-## Build Command
+The client will run at:
 
 ```bash
-npm run build
+http://localhost:3000
 ```
 
-## Deployment Notes
-- Deploy the client on Vercel.
-- Add production environment variables in Vercel dashboard.
-- Set `NEXT_PUBLIC_API_URL` to the deployed server URL.
-- Make sure server `CLIENT_URL` matches the deployed client URL.
-- Private routes are protected using client-side auth state restored from `/api/auth/me`.
-- Logged-in users should not redirect to login on private route reload.
+---
+
+## Relevant Resources
+
+- **Client Repository:** Add your client GitHub repository link here
+- **Server Repository:** Add your server GitHub repository link here
+- **Live Website:** Add your Vercel live website link here
+- **Live Server/API:** Add your Render server link here
+
+---
+
+## Author
+
+**Manjurul Islam**  
+Frontend Web Developer
