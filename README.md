@@ -130,10 +130,10 @@ Create a `.env` file inside the `server` folder and add the following environmen
 
 ```env
 PORT=5000
-MONGODB_URI=mongodb+srv://new_user_09:2buSG4CKOfLf2BAx@cluster0.sqawyxx.mongodb.net/?appName=Cluster0
-JWT_SECRET=1bfd210dfd9153deb9b11906eff3d76ff2a2420749b6b0404a42f4d26b904c97
+MONGODB_URI=
+JWT_SECRET=
 CLIENT_URL=http://localhost:3000
-GOOGLE_CLIENT_ID=632523746196-ne5jk2n63daisod217nc4etqblidkr5r.apps.googleusercontent.com
+GOOGLE_CLIENT_ID=
 NODE_ENV=development
 ```
 
@@ -164,7 +164,7 @@ Create a `.env.local` file inside the `client` folder and add the following envi
 
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:5000
-NEXT_PUBLIC_GOOGLE_CLIENT_ID=your-google-client-id
+NEXT_PUBLIC_GOOGLE_CLIENT_ID=
 ```
 
 Run the client:
